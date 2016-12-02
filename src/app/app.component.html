@@ -1,0 +1,104 @@
+<head>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<h1>{{title}}</h1>
+<h3>Event Schedule</h3>
+  <div>
+    <table class="table table-bordered table-striped">
+      <tbody *ngFor="let key of eventsSec;">
+        <tr>
+            <td class="info" colspan="2">{{key}}</td>
+        </tr>
+        <tr *ngFor="let event of eventsList[key];">
+            <td>{{event.activity.activityDescription}}</td>
+            <td>{{event.fromDate| date: "h:mm a" }} - {{event.toDate| date: "h:mm a"}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="eventsSec.length == 0">
+    <p>There are no events this week.</p>
+  </div>
+<div class="middle">
+  <button class="btn-success btn" *ngIf="!login && !registerBool"  (click)="login = true">
+    Login
+  </button>
+
+  <div *ngIf="login">
+    <div *ngIf="!token">
+      <h1>Login</h1>
+      <div class="form-inline">
+        <input class="form-control" type="text" placeholder="Username" [(ngModel)]="user.username">
+      </div>
+      <div class="form-inline">
+        <input class="form-control" type="password" placeholder="Password" [(ngModel)]="user.password">
+      </div>
+      <div *ngIf="errorBool">
+        <h2 >
+          {{error}}
+        </h2>
+      </div>
+      <button class="btn btn-success" (click)="verify(user.username, user.password)">
+        Login
+      </button>
+      <button class="btn btn-default" (click)="login = false; registerBool = true;errorBool = false">
+        Register
+      </button>
+    </div>
+
+    <div *ngIf="token" class="form-inline">
+      <button [disabled]="!isButtonsEnabled()" class="form-control" (click)="getNextWeek(-1)">
+        Previous Week Events
+      </button>
+      <button [disabled]="!isButtonsEnabled()" class="form-control" (click)="getNextWeek(1)">
+        Next Week Events
+      </button>
+    </div>
+
+  </div>
+
+  <div class="container" id="backgroundGroup" *ngIf="registerBool">
+    <div *ngIf="!token" >
+      <h1>Register</h1>
+      <div class="form-inline">
+        <input class="form-control" type="text" placeholder="Username" [(ngModel)]="newUser.Username">
+      </div>
+      <div class="form-inline">
+        <input class="form-control" type="password" placeholder="Password" [(ngModel)]="newUser.Password">
+      </div>
+      <div class="form-inline">
+        <input class="form-control" type="password" placeholder="Confirm Password" [(ngModel)]="newUser.ConfirmPassword">
+      </div>
+      <div class="form-inline">
+        <input class="form-control" type="text" placeholder="First name" [(ngModel)]="newUser.FirstName">
+      </div>
+      <div class="form-inline">
+        <input class="form-control" type="text" placeholder="Last name" [(ngModel)]="newUser.LastName">
+      </div>
+      <div class="form-inline">
+        <input class="form-control" type="email" placeholder="Email" [(ngModel)]="newUser.Email">
+      </div>
+      <div *ngIf="errorBool">
+        <h2>
+          {{error}}
+        </h2>
+      </div>
+      <button class="btn btn-success" (click)="register()">Register</button>
+      <button class="btn btn-danger" (click)="registerBool = false">Close</button>
+      <button class="btn btn-default" (click)="registerBool = false ; login=true; errorBool = false">Login</button>
+    </div>
+
+    <div *ngIf="token" class="form-inline">
+      <button [disabled]="!isButtonsEnabled()" class="form-control" (click)="getNextWeek(-1)">
+        Previous Week Events
+      </button>
+      <button [disabled]="!isButtonsEnabled()" class="form-control" (click)="getNextWeek(1)">
+        Next Week Events
+      </button>
+    </div>
+  </div>
+</div>
+</body>

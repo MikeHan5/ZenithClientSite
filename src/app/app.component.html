@@ -13,7 +13,7 @@
         </tr>
         <tr *ngFor="let event of eventsList[key];">
             <td>{{event.activity.activityDescription}}</td>
-            <td>{{event.fromDate| date: "h:mm a" }} - {{event.toDate| date: "h:mm a"}}</td>
+            <td >{{event.fromDate + "-08:00" | date: "h:mm a" }} - {{event.toDate + "-08:00"| date: "h:mm a"}}</td>
         </tr>
       </tbody>
     </table>
